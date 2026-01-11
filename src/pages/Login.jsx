@@ -3,6 +3,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState } from "react";
 
+// ✅ import local image
+import LoginBg from "../assets/login-bg.jpg";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +16,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/"); // ✅ HOME
+      navigate("/"); // HOME
     } catch (err) {
       alert("User not found. Please register.");
       navigate("/register");
@@ -44,8 +47,7 @@ const Login = () => {
         </form>
 
         <p>
-          Don’t have an account?{" "}
-          <Link to="/register">Register</Link>
+          Don’t have an account? <Link to="/register">Register</Link>
         </p>
       </div>
     </div>
@@ -58,8 +60,10 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background:
-      "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c') center/cover",
+    background: `
+      linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+      url(${LoginBg}) center / cover no-repeat
+    `,
   },
   card: {
     background: "#fff",
@@ -68,14 +72,6 @@ const styles = {
     borderRadius: "8px",
     boxShadow: "0 0 20px rgba(0,0,0,0.3)",
     textAlign: "center",
-  },
-  title: {
-    marginBottom: "10px",
-    fontSize: "28px",
-  },
-  subtitle: {
-    marginBottom: "25px",
-    color: "#666",
   },
   input: {
     width: "100%",
@@ -95,15 +91,6 @@ const styles = {
     cursor: "pointer",
     borderRadius: "5px",
     marginTop: "10px",
-  },
-  text: {
-    marginTop: "20px",
-    fontSize: "14px",
-  },
-  link: {
-    color: "#ff9900",
-    textDecoration: "none",
-    fontWeight: "bold",
   },
 };
 
