@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState } from "react";
+import loginBg from "../assets/login-bg.jpg";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -23,29 +24,37 @@ const Register = () => {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2>Create Account</h2>
+        <h2 style={styles.title}>Create Account</h2>
 
         <form onSubmit={submitHandler}>
           <input
             type="email"
             placeholder="Email"
             style={styles.input}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Password"
             style={styles.input}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button style={styles.button}>Register</button>
+
+          <button type="submit" style={styles.button}>
+            Register
+          </button>
         </form>
 
-        <p>
+        <p style={styles.text}>
           Already have an account?{" "}
-          <Link to="/login">Login</Link>
+          <Link to="/login" style={styles.link}>
+            Login
+          </Link>
         </p>
       </div>
     </div>
@@ -58,8 +67,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background:
-      "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c') center/cover",
+    background: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${loginBg}) center/cover`,
   },
   card: {
     background: "#fff",
@@ -70,12 +78,8 @@ const styles = {
     textAlign: "center",
   },
   title: {
-    marginBottom: "10px",
-    fontSize: "28px",
-  },
-  subtitle: {
-    marginBottom: "25px",
-    color: "#666",
+    marginBottom: "20px",
+    fontSize: "26px",
   },
   input: {
     width: "100%",
@@ -108,4 +112,3 @@ const styles = {
 };
 
 export default Register;
-
