@@ -1,29 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const products = [
-  { id: 1, name: "React Course" },
-  { id: 2, name: "Node Course" },
-];
+import axios from "axios";
 
 const ProductList = () => {
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  const handleView = (id) => {
-    navigate(`/product/${id}`);
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await axios.get(
+        "https://ecommerce-backend-kwo1.onrender.com/products"
+      );
+      setProducts(res.data);
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Products</h1>
 
       {products.map((product) => (
-        <div key={product.id} style={styles.card}>
-          <h3>{product.name}</h3>
+        <div key={product._id} style={styles.card}>
+          <h3>{product.title}</h3>
+          <p>₹{product.price}</p>
 
           <button
             style={styles.viewBtn}
-            onClick={() => handleView(product.id)}
+            onClick={() => navigate(`/product/${product._id}`)}
           >
             View Product
           </button>
@@ -34,12 +38,8 @@ const ProductList = () => {
 };
 
 const styles = {
-  container: {
-    padding: "40px",
-  },
-  heading: {
-    marginBottom: "30px",
-  },
+  container: { padding: "40px" },
+  heading: { marginBottom: "30px" },
   card: {
     padding: "20px",
     marginBottom: "20px",
@@ -48,12 +48,11 @@ const styles = {
   },
   viewBtn: {
     padding: "10px 16px",
-    fontSize: "15px",
-    cursor: "pointer",
     backgroundColor: "#131921",
     color: "#fff",
     border: "none",
     borderRadius: "4px",
+    cursor: "pointer",
   },
 };
 

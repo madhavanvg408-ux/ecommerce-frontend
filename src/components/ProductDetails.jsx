@@ -1,51 +1,57 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useCart } from "../context/CartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const [product, setProduct] = useState(null);
 
-  const product = {
-    _id: id,
-    name: "Product Name",
-    price: 2999,
-    image: "https://via.placeholder.com/400",
-    description:
-      "This is a high quality product with excellent performance and durability.",
-  };
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const res = await axios.get(
+        `https://ecommerce-backend-kwo1.onrender.com/products/${id}`
+      );
+      setProduct(res.data);
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (!product) return <h2 style={{ padding: "40px" }}>Loading...</h2>;
 
   return (
-    <div style={styles.container}>
-      <img
-        src={product.image}
-        alt={product.name}
-        style={styles.image}
-      />
+    <div style={{ padding: "40px" }}>
+      <div style={styles.container}>
+        <img
+          src={product.image}
+          alt={product.title}
+          style={styles.image}
+        />
 
-      <div style={styles.info}>
-        <h2>{product.name}</h2>
-        <p>⭐⭐⭐⭐☆ 4.5</p>
-        <h3 style={{ margin: "15px 0" }}>₹{product.price}</h3>
+        <div style={styles.info}>
+          <h2>{product.title}</h2> {/* ✅ REAL NAME */}
+          <p>⭐⭐⭐⭐☆ 4.5</p>
+          <h3>₹{product.price}</h3>
+          <p>{product.description}</p>
 
-        <p>{product.description}</p>
-
-        <button
-          style={styles.button}
-          onClick={() => addToCart(product)}
-        >
-          Add to Cart
-        </button>
+          <button
+            style={styles.button}
+            onClick={() => addToCart(product)}
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-/* 🔴 THIS WAS MISSING OR MISPLACED */
 const styles = {
   container: {
     display: "flex",
     gap: "40px",
-    padding: "40px",
+    marginTop: "30px",
   },
   image: {
     width: "350px",
